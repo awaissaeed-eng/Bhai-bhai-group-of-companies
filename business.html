@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Business Detail | BB Group</title>
+  <meta name="description" content="Business details — BB Group." />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: { extend: { colors: { brand: { purple: "#7c3aed", gold: "#d4a017", cyan: "#00d4ff" } } } },
+    };
+  </script>
+
+  <!-- EmailJS for business-level contact form -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+  <link rel="stylesheet" href="./assets/css/style.css" />
+</head>
+
+<body class="min-h-screen text-slate-100">
+
+  <!-- ════════════════════════════════════════════════════════════
+       NAVIGATION BAR
+       ════════════════════════════════════════════════════════════ -->
+  <header class="sticky top-0 z-50 border-b border-white/10 bg-slate-950/80 backdrop-blur-lg">
+    <div class="mx-auto flex max-w-7xl items-center justify-between gap-6 px-6 py-4 lg:px-8">
+
+      <a href="index.html" class="flex items-center gap-3">
+        <span class="text-2xl">🏢</span>
+        <span class="text-lg font-bold tracking-widest text-white">BB GROUP</span>
+      </a>
+
+      <nav class="hidden items-center gap-8 lg:flex">
+        <a href="index.html"            class="nav-link text-sm font-medium">Home</a>
+        <!-- Back to category link — updated by JavaScript -->
+        <a id="navCategoryLink" href="index.html#categories" class="nav-link text-sm font-medium">Category</a>
+        <a href="index.html#contact"    class="nav-link text-sm font-medium">Contact</a>
+      </nav>
+
+      <button id="mobileMenuButton" class="inline-flex items-center justify-center rounded-full border border-white/10 bg-white/5 p-2 text-white lg:hidden" aria-label="Open menu">
+        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
+    </div>
+
+    <div id="mobileMenu" class="hidden border-t border-white/10 bg-slate-950/95 px-6 py-4 lg:hidden">
+      <div class="space-y-4">
+        <a href="index.html"             class="block nav-link text-base font-medium py-1">Home</a>
+        <a id="mobileNavCategory" href="index.html#categories" class="block nav-link text-base font-medium py-1">Category</a>
+        <a href="index.html#contact"     class="block nav-link text-base font-medium py-1">Contact</a>
+      </div>
+    </div>
+  </header>
+
+
+  <!-- ════════════════════════════════════════════════════════════
+       BUSINESS HERO  —  Full-width cover image with name
+       Content is filled by JavaScript from data.js
+       ════════════════════════════════════════════════════════════ -->
+  <section class="relative overflow-hidden">
+
+    <!-- Background hero image (business thumbnail used as hero) -->
+    <div id="businessHeroBg" class="h-72 bg-cover bg-center sm:h-96 lg:h-[440px]" style="background-image: none;"></div>
+    <div class="absolute inset-0 bg-gradient-to-b from-transparent via-slate-950/40 to-slate-950"></div>
+
+    <!-- Business name overlay on the image -->
+    <div class="absolute bottom-0 left-0 right-0 px-6 pb-10 lg:px-8">
+      <div class="mx-auto max-w-7xl">
+
+        <!-- Breadcrumb: Home → Category → Business Name -->
+        <nav class="mb-4 text-sm text-slate-400">
+          <a href="index.html" class="hover:text-white transition">Home</a>
+          <span class="mx-2">›</span>
+          <a id="breadcrumbCategory" href="index.html#categories" class="hover:text-white transition">Category</a>
+          <span class="mx-2">›</span>
+          <span id="breadcrumbBusiness" class="text-white">Business</span>
+        </nav>
+
+        <!-- Category badge -->
+        <div class="mb-3 flex flex-wrap gap-2">
+          <span id="heroCategoryBadge" class="badge"></span>
+          <span id="heroEstablishedBadge" class="badge"></span>
+        </div>
+
+        <!-- Business name and tagline -->
+        <h1 id="businessName" class="text-4xl font-bold text-white sm:text-5xl"></h1>
+        <p  id="businessTagline" class="mt-2 text-lg text-slate-300"></p>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ════════════════════════════════════════════════════════════
+       MAIN CONTENT  —  2-column layout (details + sidebar)
+       ════════════════════════════════════════════════════════════ -->
+  <main class="py-16 px-6 lg:px-8">
+    <div class="mx-auto max-w-7xl">
+      <div class="grid gap-10 lg:grid-cols-[2fr_1fr]">
+
+
+        <!-- ── LEFT COLUMN: Business details ─────────────────── -->
+        <div class="space-y-8">
+
+          <!-- OVERVIEW / DESCRIPTION -->
+          <div class="glass-card reveal rounded-[2rem] p-8">
+            <h2 class="text-2xl font-semibold text-white">About This Business</h2>
+            <div class="section-divider"></div>
+            <p id="businessDescription" class="text-slate-300 leading-8"></p>
+          </div>
+
+
+          <!-- SERVICES + ACHIEVEMENTS GRID -->
+          <div class="grid gap-6 sm:grid-cols-2">
+
+            <!-- Services list -->
+            <div class="glass-card reveal rounded-[2rem] p-6">
+              <h3 class="text-lg font-semibold text-white mb-4">🛠️ Services</h3>
+              <ul id="servicesList" class="space-y-3 text-slate-300"></ul>
+            </div>
+
+            <!-- Achievements / Highlights list -->
+            <div class="glass-card reveal rounded-[2rem] p-6">
+              <h3 class="text-lg font-semibold text-white mb-4">🏆 Highlights</h3>
+              <ul id="highlightsList" class="space-y-3 text-slate-300"></ul>
+            </div>
+          </div>
+
+
+          <!-- PHOTO GALLERY -->
+          <div class="glass-card reveal rounded-[2rem] p-8">
+            <h3 class="text-xl font-semibold text-white mb-6">📸 Photo Gallery</h3>
+            <!-- Gallery images filled by JavaScript -->
+            <!-- ↓ Image URLs are set in data.js gallery array for each business ↓ -->
+            <div id="businessGallery" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"></div>
+          </div>
+
+
+          <!-- GOOGLE MAP -->
+          <div class="glass-card reveal rounded-[2rem] p-8">
+            <h3 class="text-xl font-semibold text-white mb-6">📍 Location</h3>
+            <p id="mapAddress" class="mb-4 text-sm text-slate-400"></p>
+            <!-- Map iframe — src is set by JavaScript from biz.mapSrc in data.js -->
+            <!-- ↓ Map embed URL is in data.js mapSrc field for each business ↓ -->
+            <iframe
+              id="businessMap"
+              class="map-frame"
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              title="Business Location"
+            ></iframe>
+          </div>
+
+
+          <!-- CONTACT FORM (send email directly to this business) -->
+          <div class="glass-card reveal rounded-[2rem] p-8">
+            <h3 class="text-xl font-semibold text-white">✉️ Send a Message</h3>
+            <p class="mt-1 mb-6 text-sm text-slate-400">Email will be sent to this business and a copy sent to you.</p>
+
+            <div class="space-y-4">
+              <div>
+                <label class="mb-2 block text-sm font-medium text-slate-300">Your Name</label>
+                <input type="text" id="bizContactName" placeholder="Your name"
+                  class="w-full rounded-xl border border-white/10 bg-slate-900/70 px-4 py-3 text-slate-100 placeholder-slate-500 transition" />
+              </div>
+              <div>
+                <label class="mb-2 block text-sm font-medium text-slate-300">Your Email</label>
+                <input type="email" id="bizContactEmail" placeholder="your@email.com"
+                  class="w-full rounded-xl border border-white/10 bg-slate-900/70 px-4 py-3 text-slate-100 placeholder-slate-500 transition" />
+              </div>
+              <div>
+                <label class="mb-2 block text-sm font-medium text-slate-300">Message</label>
+                <textarea id="bizContactMessage" rows="4" placeholder="Your message..."
+                  class="w-full rounded-xl border border-white/10 bg-slate-900/70 px-4 py-3 text-slate-100 placeholder-slate-500 transition resize-none"></textarea>
+              </div>
+
+              <!-- Status message (success/error) -->
+              <div id="bizFormStatus" class="hidden rounded-xl p-4 text-sm font-medium"></div>
+
+              <button
+                id="bizSubmitBtn"
+                onclick="handleBizContactSubmit()"
+                class="w-full rounded-xl bg-brand-purple px-6 py-3 font-semibold text-white transition hover:bg-purple-700 hover:shadow-lg hover:shadow-purple-500/30"
+              >
+                Send Message
+              </button>
+            </div>
+          </div>
+
+        </div>
+        <!-- ── END LEFT COLUMN ──────────────────────────────── -->
+
+
+        <!-- ── RIGHT COLUMN: Sidebar ────────────────────────── -->
+        <aside class="space-y-6">
+
+          <!-- QUICK LINKS: WhatsApp, Website, Social media -->
+          <div class="glass-card reveal rounded-[2rem] p-6">
+            <h3 class="mb-5 text-base font-semibold text-white">🔗 Quick Links</h3>
+
+            <!-- WhatsApp button (green) -->
+            <a id="bizWhatsapp" href="#" target="_blank" rel="noopener noreferrer"
+              class="mb-3 flex items-center gap-3 rounded-xl bg-green-600/20 border border-green-500/30
+                     px-4 py-3 text-sm font-medium text-green-300 transition hover:bg-green-600/30">
+              💬 Chat on WhatsApp
+            </a>
+
+            <!-- Website button (shown only if website URL is set) -->
+            <a id="bizWebsite" href="#" target="_blank" rel="noopener noreferrer"
+              class="hidden mb-3 flex items-center gap-3 rounded-xl border border-white/10 bg-white/5
+                     px-4 py-3 text-sm font-medium text-slate-300 transition hover:bg-white/10">
+              🌐 Visit Website
+            </a>
+
+            <!-- Social media icons row -->
+            <div id="bizSocialLinks" class="mt-4 flex flex-wrap gap-3"></div>
+          </div>
+
+
+          <!-- CONTACT INFORMATION -->
+          <div class="glass-card reveal rounded-[2rem] p-6 space-y-5">
+            <h3 class="text-base font-semibold text-white">📋 Contact Information</h3>
+
+            <!-- Phone -->
+            <div>
+              <p class="text-xs uppercase tracking-widest text-slate-500">Phone</p>
+              <a id="bizPhone" href="#" class="mt-1 block font-semibold text-white hover:text-brand-cyan transition"></a>
+            </div>
+
+            <!-- Email -->
+            <div>
+              <p class="text-xs uppercase tracking-widest text-slate-500">Email</p>
+              <a id="bizEmail" href="#" class="mt-1 block font-semibold text-white hover:text-brand-cyan transition"></a>
+            </div>
+
+            <!-- Address -->
+            <div>
+              <p class="text-xs uppercase tracking-widest text-slate-500">Address</p>
+              <p id="bizAddress" class="mt-1 font-semibold text-white"></p>
+            </div>
+
+            <!-- Established year -->
+            <div>
+              <p class="text-xs uppercase tracking-widest text-slate-500">Established</p>
+              <p id="bizEstablished" class="mt-1 font-semibold text-white"></p>
+            </div>
+          </div>
+
+
+          <!-- OTHER BUSINESSES IN SAME CATEGORY -->
+          <div class="glass-card reveal rounded-[2rem] p-6">
+            <h3 class="mb-4 text-base font-semibold text-white">More in This Category</h3>
+            <div id="relatedBusinesses" class="space-y-3"></div>
+          </div>
+
+
+          <!-- BACK TO CATEGORY BUTTON -->
+          <a id="backToCategoryBtn" href="index.html#categories"
+            class="flex items-center gap-3 glass-card rounded-2xl p-5 transition hover:border-brand-purple/40">
+            <span>←</span>
+            <span id="backToCategoryLabel" class="text-sm font-medium text-white">Back to Category</span>
+          </a>
+
+        </aside>
+        <!-- ── END RIGHT COLUMN ─────────────────────────────── -->
+
+      </div>
+    </div>
+  </main>
+
+
+  <!-- ════════════════════════════════════════════════════════════
+       FOOTER
+       ════════════════════════════════════════════════════════════ -->
+  <footer class="border-t border-white/10 bg-slate-950/80 py-8">
+    <div class="mx-auto flex max-w-7xl flex-col gap-4 px-6 text-sm text-slate-400 sm:flex-row sm:justify-between lg:px-8">
+      <p>© <span id="footerYear"></span> BB Group of Companies. All rights reserved.</p>
+      <div class="flex gap-4">
+        <a href="index.html"            class="nav-link">Home</a>
+        <a id="footerCategoryLink" href="index.html#categories" class="nav-link">Back to Category</a>
+      </div>
+    </div>
+  </footer>
+
+
+  <!-- ════════════════════════════════════════════════════════════
+       SCRIPTS
+       ════════════════════════════════════════════════════════════ -->
+  <script src="./assets/js/data.js"></script>
+  <script src="./assets/js/main.js"></script>
+  <script src="./assets/js/business.js"></script>
+
+</body>
+</html>

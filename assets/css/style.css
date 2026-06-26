@@ -1,0 +1,216 @@
+/* ============================================================
+   STYLE.CSS  —  Custom styles that Tailwind cannot handle.
+   ============================================================
+   Keep this file SMALL. Tailwind handles 90% of styling.
+   Only add CSS here when Tailwind utility classes are not enough
+   (e.g. glassmorphism effect, custom animations, map iframe).
+   ============================================================ */
+
+
+/* ── 1. GLASSMORPHISM CARD EFFECT ─────────────────────────── */
+/* This "frosted glass" look cannot be done with Tailwind alone */
+.glass-card {
+  background: rgba(15, 23, 42, 0.6);         /* semi-transparent dark background */
+  backdrop-filter: blur(16px);               /* the blur that creates the glass effect */
+  -webkit-backdrop-filter: blur(16px);       /* for Safari browser support */
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+
+/* ── 2. SMOOTH PAGE BACKGROUND ────────────────────────────── */
+/* Dark gradient background for the entire site */
+body {
+  background: linear-gradient(135deg, #020617 0%, #0f172a 50%, #1e1b4b 100%);
+  background-attachment: fixed;              /* background stays fixed while scrolling */
+  min-height: 100vh;
+}
+
+
+/* ── 3. NAVIGATION LINK HOVER EFFECT ──────────────────────── */
+/* Underline slide-in effect on nav links */
+.nav-link {
+  position: relative;
+  color: #94a3b8;                            /* slate-400 */
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1.5px;
+  background: #7c3aed;                       /* brand purple */
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover {
+  color: #ffffff;
+}
+
+.nav-link:hover::after {
+  width: 100%;                               /* underline expands on hover */
+}
+
+
+/* ── 4. SMOOTH IMAGE LOADING ───────────────────────────────── */
+/* Images fade in after loading to prevent jarring appearance */
+.card-image {
+  transition: transform 0.5s ease, opacity 0.4s ease;
+  opacity: 0;
+}
+
+.card-image.loaded {
+  opacity: 1;
+}
+
+
+/* ── 5. BADGE STYLE ────────────────────────────────────────── */
+/* Small pill badges used for category labels */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 14px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  border: 1px solid rgba(124, 58, 237, 0.4);
+  background: rgba(124, 58, 237, 0.15);
+  color: #a78bfa;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+
+/* ── 6. GOOGLE MAP IFRAME ──────────────────────────────────── */
+/* Forces the iframe to fill its container properly */
+.map-frame {
+  width: 100%;
+  height: 320px;
+  border: none;
+  border-radius: 1.5rem;
+  filter: invert(90%) hue-rotate(180deg);   /* dark mode tint for the map */
+}
+
+
+/* ── 7. SCROLL REVEAL ANIMATION ───────────────────────────── */
+/* Elements with this class start invisible and slide up when visible */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+
+/* ── 8. GLOW EFFECT ON HOVER CARDS ────────────────────────── */
+.card-glow:hover {
+  box-shadow: 0 0 30px rgba(124, 58, 237, 0.2);
+}
+
+
+/* ── 9. SOCIAL LINK BUTTONS ────────────────────────────────── */
+.social-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.05);
+  color: #94a3b8;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  font-size: 1rem;
+}
+
+.social-btn:hover {
+  background: rgba(124, 58, 237, 0.3);
+  border-color: rgba(124, 58, 237, 0.6);
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+
+
+/* ── 10. HERO GRADIENT OVERLAY ─────────────────────────────── */
+/* Used on hero section for text readability over background image */
+.hero-overlay {
+  background: linear-gradient(to bottom, rgba(2,6,23,0.3) 0%, rgba(2,6,23,0.8) 70%, rgba(2,6,23,1) 100%);
+}
+
+
+/* ── 11. SECTION DIVIDER ───────────────────────────────────── */
+.section-divider {
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(to right, #7c3aed, #00d4ff);
+  border-radius: 2px;
+  margin: 12px 0 24px 0;
+}
+
+
+/* ── 12. INPUT FOCUS STYLE ─────────────────────────────────── */
+/* Custom focus ring for form inputs */
+input:focus, textarea:focus {
+  outline: none;
+  border-color: rgba(124, 58, 237, 0.7) !important;
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.15);
+}
+
+
+/* ── 13. SCROLLBAR STYLING (Chrome/Edge) ──────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0f172a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #7c3aed;
+}
+
+
+/* ── 14. WHATSAPP FLOATING BUTTON ──────────────────────────── */
+/* Fixed green WhatsApp button that always stays in corner */
+.whatsapp-float {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 9999;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: #25d366;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.whatsapp-float:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 28px rgba(37, 211, 102, 0.6);
+}
+
+.whatsapp-float svg {
+  width: 28px;
+  height: 28px;
+  fill: #ffffff;
+}

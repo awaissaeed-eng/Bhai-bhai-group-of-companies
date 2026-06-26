@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- ── Page title and SEO description ─────────────────────── -->
+  <title>BB Group | Premium Business Portfolio</title>
+  <meta name="description" content="BB Group — a legacy of excellence across real estate, technology, education, healthcare, jewellery and more in Islamabad." />
+
+  <!-- ── Tailwind CSS (from CDN — no installation needed) ───── -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- ── Tailwind custom color configuration ─────────────────── -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              purple: "#7c3aed",   /* Main accent purple */
+              gold:   "#d4a017",   /* Gold accent */
+              cyan:   "#00d4ff",   /* Cyan accent */
+            },
+          },
+        },
+      },
+    };
+  </script>
+
+  <!-- ── EmailJS (sends contact form emails — free service) ──── -->
+  <!-- Sign up at https://www.emailjs.com/ and replace your keys in data.js -->
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+  <!-- ── Our custom CSS (glassmorphism, animations, etc.) ──────
+       This must come AFTER Tailwind so our custom styles can override Tailwind if needed -->
+  <link rel="stylesheet" href="./assets/css/style.css" />
+</head>
+
+<body class="min-h-screen text-slate-100">
+
+  <!-- ════════════════════════════════════════════════════════════
+       NAVIGATION BAR  —  Sticky at the top, blurred background
+       ════════════════════════════════════════════════════════════ -->
+  <header class="sticky top-0 z-50 border-b border-white/10 bg-slate-950/80 backdrop-blur-lg">
+    <div class="mx-auto flex max-w-7xl items-center justify-between gap-6 px-6 py-4 lg:px-8">
+
+      <!-- Group logo / name -->
+      <a href="index.html" class="flex items-center gap-3">
+        <!-- ← REPLACE THIS EMOJI WITH YOUR LOGO IMAGE if you have one -->
+        <span class="text-2xl">🏢</span>
+        <span class="text-lg font-bold tracking-widest text-white">BB GROUP</span>
+      </a>
+
+      <!-- Desktop navigation links (hidden on mobile) -->
+      <nav class="hidden items-center gap-8 lg:flex">
+        <a href="#about"      class="nav-link text-sm font-medium">About</a>
+        <a href="#categories" class="nav-link text-sm font-medium">Businesses</a>
+        <a href="#gallery"    class="nav-link text-sm font-medium">Gallery</a>
+        <a href="#contact"    class="nav-link text-sm font-medium">Contact</a>
+      </nav>
+
+      <!-- Contact button (desktop only) -->
+      <a href="#contact" class="hidden lg:inline-flex items-center gap-2 rounded-full bg-brand-purple px-5 py-2 text-sm font-medium text-white transition hover:bg-purple-700">
+        Get In Touch
+      </a>
+
+      <!-- Hamburger button (mobile only — shows/hides mobile menu) -->
+      <button id="mobileMenuButton" class="inline-flex items-center justify-center rounded-full border border-white/10 bg-white/5 p-2 text-white lg:hidden" aria-label="Open menu">
+        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Mobile dropdown menu (hidden by default, toggled by hamburger button) -->
+    <div id="mobileMenu" class="hidden border-t border-white/10 bg-slate-950/95 px-6 py-4 lg:hidden">
+      <div class="space-y-4">
+        <a href="#about"      class="block nav-link text-base font-medium py-1">About</a>
+        <a href="#categories" class="block nav-link text-base font-medium py-1">Businesses</a>
+        <a href="#gallery"    class="block nav-link text-base font-medium py-1">Gallery</a>
+        <a href="#contact"    class="block nav-link text-base font-medium py-1">Contact</a>
+      </div>
+    </div>
+  </header>
+
+
+  <!-- ════════════════════════════════════════════════════════════
+       HERO SECTION  —  Full-screen banner with group name and tagline
+       ════════════════════════════════════════════════════════════ -->
+  <section class="relative flex min-h-screen items-center justify-center overflow-hidden">
+
+    <!-- Background image (replace URL with your own hero image) -->
+    <!-- ↓ PASTE YOUR HERO IMAGE URL HERE ↓ -->
+    <div class="absolute inset-0 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=1600');"></div>
+
+    <!-- Dark overlay so text is readable over the background image -->
+    <div class="absolute inset-0 hero-overlay"></div>
+
+    <!-- Hero text content (centred) -->
+    <div class="relative z-10 mx-auto max-w-5xl px-6 text-center">
+
+      <!-- Small label above the main title -->
+      <p class="mb-4 text-sm uppercase tracking-[0.3em] text-brand-gold">Welcome to</p>
+
+      <!-- Main heading — the group name is set in data.js SITE.name -->
+      <h1 id="heroTitle" class="mb-6 text-5xl font-bold leading-tight text-white sm:text-6xl lg:text-7xl">
+        BB Group
+      </h1>
+
+      <!-- Tagline — set in data.js SITE.tagline -->
+      <p id="heroTagline" class="mb-4 text-xl text-slate-300 sm:text-2xl">
+        A Legacy of Excellence
+      </p>
+
+      <!-- Brief description -->
+      <p id="heroDescription" class="mx-auto mb-10 max-w-2xl text-base leading-8 text-slate-400"></p>
+
+      <!-- CTA buttons -->
+      <div class="flex flex-wrap justify-center gap-4">
+        <a href="#categories" class="rounded-full bg-brand-purple px-8 py-3 font-semibold text-white transition hover:bg-purple-700 hover:shadow-lg hover:shadow-purple-500/30">
+          Explore Businesses
+        </a>
+        <a href="#contact" class="rounded-full border border-white/20 bg-white/10 px-8 py-3 font-semibold text-white backdrop-blur transition hover:bg-white/20">
+          Contact Us
+        </a>
+      </div>
+    </div>
+
+    <!-- Animated scroll-down indicator -->
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
+      <svg class="h-6 w-6 text-slate-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+      </svg>
+    </div>
+  </section>
+
+
+  <!-- ════════════════════════════════════════════════════════════
+       STATS BAR  —  Key numbers about the group
+       ════════════════════════════════════════════════════════════ -->
+  <section class="border-y border-white/10 bg-slate-900/50">
+    <div class="mx-auto max-w-7xl px-6 py-10 lg:px-8">
+      <!-- Stats are rendered here by JavaScript (see index.js) -->
+      <div id="statsBar" class="grid grid-cols-2 gap-6 text-center sm:grid-cols-4"></div>
+    </div>
+  </section>
+
+
+  <!-- ════════════════════════════════════════════════════════════
+       ABOUT SECTION  —  Brief introduction to the group
+       ════════════════════════════════════════════════════════════ -->
+  <section id="about" class="py-24 px-6 lg:px-8">
+    <div class="mx-auto max-w-7xl">
+      <div class="grid gap-16 lg:grid-cols-2 lg:items-center">
+
+        <!-- Left: text content -->
+        <div class="reveal">
+          <p class="mb-2 text-sm uppercase tracking-[0.3em] text-brand-cyan">Our Story</p>
+          <h2 class="mb-4 text-4xl font-bold text-white">About BB Group</h2>
+          <div class="section-divider"></div>
+          <p id="aboutDescription" class="mb-6 text-lg leading-8 text-slate-300"></p>
+
+          <!-- About stats grid (rendered by JavaScript) -->
+          <div id="aboutStats" class="mt-8 grid grid-cols-2 gap-6"></div>
+        </div>
+
+        <!-- Right: image -->
+        <div class="reveal">
+          <!-- ↓ REPLACE WITH YOUR ABOUT SECTION IMAGE ↓ -->
+          <div class="overflow-hidden rounded-[2rem] border border-white/10">
+            <img
+              src="https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=800"
+              alt="BB Group Office"
+              class="card-image h-full w-full object-cover"
+              style="height: 420px;"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ════════════════════════════════════════════════════════════
+       BUSINESS CATEGORIES  —  Grid of category cards
+       ════════════════════════════════════════════════════════════ -->
+  <section id="categories" class="py-24 px-6 lg:px-8 bg-slate-900/30">
+    <div class="mx-auto max-w-7xl">
+
+      <!-- Section header -->
+      <div class="mb-16 text-center reveal">
+        <p class="mb-2 text-sm uppercase tracking-[0.3em] text-brand-gold">Our Portfolio</p>
+        <h2 class="mb-4 text-4xl font-bold text-white">Business Categories</h2>
+        <div class="section-divider mx-auto"></div>
+        <p class="mx-auto max-w-xl text-slate-400">Explore our diverse portfolio of businesses spanning 10 industries</p>
+      </div>
+
+      <!-- Category cards rendered here by JavaScript -->
+      <div id="categoryCards" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"></div>
+    </div>
+  </section>
+
+
+  <!-- ════════════════════════════════════════════════════════════
+       FEATURED BUSINESSES  —  Highlighted top businesses
+       ════════════════════════════════════════════════════════════ -->
+  <section id="featured" class="py-24 px-6 lg:px-8">
+    <div class="mx-auto max-w-7xl">
+
+      <!-- Section header -->
+      <div class="mb-16 text-center reveal">
+        <p class="mb-2 text-sm uppercase tracking-[0.3em] text-brand-cyan">Spotlight</p>
+        <h2 class="mb-4 text-4xl font-bold text-white">Featured Businesses</h2>
+        <div class="section-divider mx-auto"></div>
+      </div>
+
+      <!-- Featured business cards rendered here by JavaScript -->
+      <div id="featuredCards" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"></div>
+    </div>
+  </section>
+
+
+  <!-- ════════════════════════════════════════════════════════════
+       PHOTO GALLERY  —  Grid of business images
+       ════════════════════════════════════════════════════════════ -->
+  <section id="gallery" class="py-24 px-6 lg:px-8 bg-slate-900/30">
+    <div class="mx-auto max-w-7xl">
+
+      <!-- Section header -->
+      <div class="mb-16 text-center reveal">
+        <p class="mb-2 text-sm uppercase tracking-[0.3em] text-brand-gold">Visual Tour</p>
+        <h2 class="mb-4 text-4xl font-bold text-white">Our Gallery</h2>
+        <div class="section-divider mx-auto"></div>
+      </div>
+
+      <!-- Gallery images rendered here by JavaScript -->
+      <div id="galleryGrid" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3"></div>
+    </div>
+  </section>
+
+
+  <!-- ════════════════════════════════════════════════════════════
+       CONTACT SECTION  —  Form + contact info + map
+       ════════════════════════════════════════════════════════════ -->
+  <section id="contact" class="py-24 px-6 lg:px-8">
+    <div class="mx-auto max-w-7xl">
+
+      <!-- Section header -->
+      <div class="mb-16 text-center reveal">
+        <p class="mb-2 text-sm uppercase tracking-[0.3em] text-brand-purple">Get In Touch</p>
+        <h2 class="mb-4 text-4xl font-bold text-white">Contact Us</h2>
+        <div class="section-divider mx-auto"></div>
+      </div>
+
+      <div class="grid gap-10 lg:grid-cols-2">
+
+        <!-- LEFT: Contact form -->
+        <div class="glass-card reveal rounded-[2rem] p-8 lg:p-10">
+          <h3 class="mb-2 text-2xl font-semibold text-white">Send a Message</h3>
+          <p class="mb-8 text-slate-400">We reply within 24 hours.</p>
+
+          <!-- Contact form — DO NOT use action="" here; EmailJS handles sending -->
+          <div id="contactForm" class="space-y-5">
+
+            <!-- Name input -->
+            <div>
+              <label class="mb-2 block text-sm font-medium text-slate-300">Your Name</label>
+              <input
+                type="text"
+                id="contactName"
+                placeholder="Muhammad Awais"
+                class="w-full rounded-xl border border-white/10 bg-slate-900/70 px-4 py-3 text-slate-100 placeholder-slate-500 transition"
+              />
+            </div>
+
+            <!-- Email input -->
+            <div>
+              <label class="mb-2 block text-sm font-medium text-slate-300">Email Address</label>
+              <input
+                type="email"
+                id="contactEmail"
+                placeholder="you@example.com"
+                class="w-full rounded-xl border border-white/10 bg-slate-900/70 px-4 py-3 text-slate-100 placeholder-slate-500 transition"
+              />
+            </div>
+
+            <!-- Subject input -->
+            <div>
+              <label class="mb-2 block text-sm font-medium text-slate-300">Subject</label>
+              <input
+                type="text"
+                id="contactSubject"
+                placeholder="Business Inquiry"
+                class="w-full rounded-xl border border-white/10 bg-slate-900/70 px-4 py-3 text-slate-100 placeholder-slate-500 transition"
+              />
+            </div>
+
+            <!-- Message textarea -->
+            <div>
+              <label class="mb-2 block text-sm font-medium text-slate-300">Message</label>
+              <textarea
+                id="contactMessage"
+                rows="4"
+                placeholder="Write your message here..."
+                class="w-full rounded-xl border border-white/10 bg-slate-900/70 px-4 py-3 text-slate-100 placeholder-slate-500 transition resize-none"
+              ></textarea>
+            </div>
+
+            <!-- Status message (shown after form submission) -->
+            <div id="formStatus" class="hidden rounded-xl p-4 text-sm font-medium"></div>
+
+            <!-- Submit button -->
+            <button
+              id="submitBtn"
+              onclick="handleContactSubmit()"
+              class="w-full rounded-xl bg-brand-purple px-6 py-3 font-semibold text-white transition hover:bg-purple-700 hover:shadow-lg hover:shadow-purple-500/30 active:scale-95"
+            >
+              Send Message
+            </button>
+          </div>
+        </div>
+
+        <!-- RIGHT: Contact info + social links + map -->
+        <div class="space-y-6 reveal">
+
+          <!-- Contact info cards (phone, email, address, hours) -->
+          <div id="contactInfoCards" class="grid gap-4 sm:grid-cols-2"></div>
+
+          <!-- WhatsApp direct link -->
+          <a
+            id="whatsappContactLink"
+            href="#"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="flex items-center gap-4 glass-card rounded-2xl p-5 transition hover:border-green-500/30 hover:shadow-lg hover:shadow-green-500/10"
+          >
+            <div class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-green-500/20 text-2xl">
+              💬
+            </div>
+            <div>
+              <p class="font-semibold text-white">WhatsApp</p>
+              <p class="text-sm text-slate-400">Click to chat directly</p>
+            </div>
+          </a>
+
+          <!-- Social media links row -->
+          <div class="glass-card rounded-2xl p-6">
+            <p class="mb-4 text-sm font-medium uppercase tracking-widest text-slate-400">Follow Us</p>
+            <div id="socialLinks" class="flex flex-wrap gap-3"></div>
+          </div>
+
+          <!-- Embedded Google Map -->
+          <div class="overflow-hidden rounded-[2rem] border border-white/10">
+            <iframe
+              id="mainMap"
+              class="map-frame"
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              title="BB Group Location"
+            ></iframe>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ════════════════════════════════════════════════════════════
+       FOOTER
+       ════════════════════════════════════════════════════════════ -->
+  <footer class="border-t border-white/10 bg-slate-950/80 py-10">
+    <div class="mx-auto max-w-7xl px-6 lg:px-8">
+      <div class="flex flex-col items-center gap-6 text-center sm:flex-row sm:justify-between sm:text-left">
+
+        <!-- Left: group name -->
+        <div>
+          <p class="font-bold text-white tracking-widest">BB GROUP</p>
+          <p class="mt-1 text-sm text-slate-400">A Legacy of Excellence</p>
+        </div>
+
+        <!-- Right: footer links -->
+        <div class="flex flex-wrap justify-center gap-6 text-sm text-slate-400 sm:justify-end">
+          <a href="index.html"   class="nav-link">Home</a>
+          <a href="#categories"  class="nav-link">Businesses</a>
+          <a href="#contact"     class="nav-link">Contact</a>
+        </div>
+      </div>
+
+      <!-- Copyright line -->
+      <p class="mt-8 text-center text-xs text-slate-500">
+        © <span id="footerYear"></span> BB Group of Companies. All rights reserved.
+      </p>
+    </div>
+  </footer>
+
+
+  <!-- ════════════════════════════════════════════════════════════
+       SCRIPTS
+       ════════════════════════════════════════════════════════════
+       Order matters:
+         1. data.js    — all business data (must load FIRST)
+         2. main.js    — shared utilities (needs data.js)
+         3. index.js   — homepage-specific logic (needs both)
+       ════════════════════════════════════════════════════════════ -->
+  <script src="./assets/js/data.js"></script>
+  <script src="./assets/js/main.js"></script>
+  <script src="./assets/js/index.js"></script>
+
+</body>
+</html>
