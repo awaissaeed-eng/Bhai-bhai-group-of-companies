@@ -117,11 +117,6 @@ function renderCategories() {
           />
           <!-- Dark gradient overlay for text readability -->
           <div class="absolute inset-0 bg-gradient-to-t from-slate-950/90 via-slate-950/20"></div>
-
-          <!-- Category icon in top-right corner -->
-          <div class="absolute top-4 right-4 rounded-full bg-black/40 px-3 py-1 text-xl backdrop-blur">
-            ${category.icon}
-          </div>
         </div>
 
         <!-- Card text content -->

@@ -39,7 +39,7 @@ function getCategoryIdFromUrl() {
    ───────────────────────────────────────────────────────────── */
 function renderCategoryHeader(category) {
   /* Page title in browser tab */
-  document.title = category.name + " | BB Group";
+  document.title = category.name + " | Bhai Bhai Group";
 
   /* Breadcrumb */
   document.getElementById("breadcrumbCategory").textContent = category.name;

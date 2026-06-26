@@ -17,7 +17,7 @@
 const SITE = {
   name:        "Bhai Bhai Group of Companies",     // ← Change your group name here
   tagline:     "A Legacy of Excellence",           // ← Change tagline
-  description: "Trusted across industries since 2005, BB Group brings together premier businesses in real estate, technology, education, and more.",
+  description: "Trusted across industries since 2005, Bhai Bhai Group brings together premier businesses in real estate, technology, education, and more.",
   phone:       "+92 519 292 587",                 // ← Main group contact number
   email:       "dcwrwp@gmail.com",                 // ← Main group email
   whatsapp:    "https://wa.me/92 519 292 587",       // ← Main WhatsApp link

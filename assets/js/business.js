@@ -39,7 +39,7 @@ function getBusinessIdFromUrl() {
    ───────────────────────────────────────────────────────────── */
 function renderHero(biz) {
   /* Page title in the browser tab */
-  document.title = biz.name + " | BB Group";
+  document.title = biz.name + " | Bhai Bhai Group";
 
   /* Hero background image — uses the business thumbnail */
   /* ↓ The image URL comes from biz.thumbnail in data.js ↓ */
@@ -381,7 +381,7 @@ function handleBizContactSubmit() {
     subject:       "Inquiry for " + (currentBusiness ? currentBusiness.name : "Business"),
     message:       message,
     to_email:      currentBusiness ? currentBusiness.email : SITE.email,
-    business_name: currentBusiness ? currentBusiness.name  : "BB Group",
+    business_name: currentBusiness ? currentBusiness.name  : "Bhai Bhai Group",
   })
   .then(function () {
     status.className   = "rounded-xl p-4 text-sm font-medium bg-green-500/20 text-green-300 border border-green-500/30";
