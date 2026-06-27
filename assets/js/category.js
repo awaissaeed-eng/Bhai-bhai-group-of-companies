@@ -81,52 +81,114 @@ function renderBusinessCards(businesses) {
     return;
   }
 
-  grid.innerHTML = businesses.map(function (biz) {
-    return `
-      <!-- Business card — clicking opens the full detail page -->
-      <a
-        href="business.html?id=${encodeURIComponent(biz.id)}"
-        class="group overflow-hidden rounded-[2rem] border border-white/10 bg-slate-900/70
-               transition hover:-translate-y-1 hover:border-brand-gold/40 hover:shadow-xl
-               hover:shadow-black/30 reveal card-glow"
-      >
-        <!-- Business thumbnail image -->
-        <!-- ↓ Image URL is set in data.js for each business ↓ -->
-        <div class="relative h-56 overflow-hidden bg-slate-800">
-          <img
-            src="${biz.thumbnail}"
-            alt="${biz.name}"
-            class="card-image h-full w-full object-cover transition duration-500 group-hover:scale-105"
-          />
-          <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/10"></div>
+  /* Split businesses into regular and delivered groups */
+  const regularBusinesses = businesses.filter(function (biz) {
+    return !biz.delivered;
+  });
 
-          <!-- Established year badge on the image -->
-          ${biz.established ? `
-            <div class="absolute top-4 right-4">
-              <span class="badge">Est. ${biz.established}</span>
+  const deliveredBusinesses = businesses.filter(function (biz) {
+    return biz.delivered;
+  });
+
+  /* Build the cards in two sections: normal businesses first, delivered businesses below */
+  const sections = [];
+
+  if (regularBusinesses.length > 0) {
+    sections.push(regularBusinesses.map(function (biz) {
+      return `
+        <!-- Business card — clicking opens the full detail page -->
+        <a
+          href="business.html?id=${encodeURIComponent(biz.id)}"
+          class="group overflow-hidden rounded-[2rem] border border-white/10 bg-slate-900/70 glass-card
+                 transition hover:-translate-y-1 hover:border-brand-gold/40 hover:shadow-xl
+                 hover:shadow-black/30 reveal card-glow"
+        >
+          <!-- Business thumbnail image -->
+          <!-- ↓ Image URL is set in data.js for each business ↓ -->
+          <div class="relative h-56 overflow-hidden bg-slate-800">
+            <img
+              src="${biz.thumbnail}"
+              alt="${biz.name}"
+              class="card-image h-full w-full object-cover transition duration-500 group-hover:scale-105"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/10"></div>
+
+            <!-- Established year badge on the image -->
+            ${biz.established ? `
+              <div class="absolute top-4 right-4">
+                <span class="badge">Est. ${biz.established}</span>
+              </div>
+            ` : ""}
+          </div>
+
+          <!-- Card text content -->
+          <div class="p-5">
+            <h3 class="text-lg font-semibold text-white">${biz.name}</h3>
+            <p class="mt-1 text-sm text-slate-400 line-clamp-2">${biz.tagline}</p>
+
+            <!-- Quick contact icons -->
+            <div class="mt-4 flex items-center gap-3">
+              ${biz.phone ? `<span class="text-xs text-slate-500">📞 ${biz.phone}</span>` : ""}
             </div>
-          ` : ""}
-        </div>
 
-        <!-- Card text content -->
-        <div class="p-5">
-          <h3 class="text-lg font-semibold text-white">${biz.name}</h3>
-          <p class="mt-1 text-sm text-slate-400 line-clamp-2">${biz.tagline}</p>
+            <!-- "View details" link -->
+            <div class="mt-4 flex items-center justify-between">
+              <span class="text-xs text-slate-500">${biz.services ? biz.services.slice(0,2).join(" · ") : ""}</span>
+              <span class="text-xs font-medium text-brand-purple">View details →</span>
+            </div>
+          </div>
+        </a>
+      `;
+    }).join(""));
+  }
 
-          <!-- Quick contact icons -->
-          <div class="mt-4 flex items-center gap-3">
-            ${biz.phone ? `<span class="text-xs text-slate-500">📞 ${biz.phone}</span>` : ""}
+  if (deliveredBusinesses.length > 0) {
+    sections.push(`
+      <div class="col-span-full mt-6 mb-3 flex items-center gap-4">
+        <div class="h-px flex-1 bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+        <span class="text-sm font-semibold uppercase tracking-[0.35em] text-brand-gold">Delivered Franchises</span>
+        <div class="h-px flex-1 bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+      </div>
+    `);
+
+    sections.push(deliveredBusinesses.map(function (biz) {
+      return `
+        <!-- Delivered franchise card -->
+        <a
+          href="business.html?id=${encodeURIComponent(biz.id)}"
+          class="group overflow-hidden rounded-[2rem] border border-white/10 bg-slate-900/70 glass-card
+                 transition hover:-translate-y-1 hover:border-brand-gold/40 hover:shadow-xl
+                 hover:shadow-black/30 reveal card-glow"
+        >
+          <div class="relative h-56 overflow-hidden bg-slate-800">
+            <img
+              src="${biz.thumbnail}"
+              alt="${biz.name}"
+              class="card-image h-full w-full object-cover transition duration-500 group-hover:scale-105"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/10"></div>
+
+            <div class="absolute top-4 right-4">
+              <span class="rounded-full border border-brand-gold/40 bg-brand-gold/15 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.25em] text-brand-gold">
+                ✓ Delivered Franchise
+              </span>
+            </div>
           </div>
 
-          <!-- "View details" link -->
-          <div class="mt-4 flex items-center justify-between">
-            <span class="text-xs text-slate-500">${biz.services ? biz.services.slice(0,2).join(" · ") : ""}</span>
-            <span class="text-xs font-medium text-brand-purple">View details →</span>
+          <div class="p-5">
+            <h3 class="text-lg font-semibold text-white">${biz.name}</h3>
+            <p class="mt-1 text-sm text-slate-400 line-clamp-2">${biz.tagline}</p>
+            <div class="mt-4 flex items-center justify-between">
+              <span class="text-xs text-slate-500">${biz.services ? biz.services.slice(0,2).join(" · ") : ""}</span>
+              <span class="text-xs font-medium text-brand-purple">View details →</span>
+            </div>
           </div>
-        </div>
-      </a>
-    `;
-  }).join("");
+        </a>
+      `;
+    }).join(""));
+  }
+
+  grid.innerHTML = sections.join("");
 
   /* Re-run scroll reveal and lazy images for newly added cards */
   setupScrollReveal();
@@ -174,12 +236,12 @@ function filterBusinesses() {
   const query = document.getElementById("businessSearch").value.toLowerCase().trim();
 
   if (!query) {
-    /* No search text — show all businesses */
+    /* No search text — show all businesses, with delivered franchises below the regular list */
     renderBusinessCards(currentBusinesses);
     return;
   }
 
-  /* Filter businesses whose name, tagline, or description contains the search text */
+  /* Filter businesses whose name, tagline, description, or services contain the search text */
   const filtered = currentBusinesses.filter(function (biz) {
     return (
       biz.name.toLowerCase().includes(query)         ||
@@ -189,6 +251,7 @@ function filterBusinesses() {
     );
   });
 
+  /* Show regular businesses first, then delivered franchises when a match is found */
   renderBusinessCards(filtered);
 }
 

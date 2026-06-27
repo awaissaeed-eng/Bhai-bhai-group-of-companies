@@ -59,6 +59,7 @@
       <nav class="hidden lg:flex absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 items-center gap-8">
         <a href="#about"      class="nav-link text-sm font-medium">About</a>
         <a href="#categories" class="nav-link text-sm font-medium">Businesses</a>
+        <a href="#franchises" class="nav-link text-sm font-medium">Franchises</a>
         <a href="#gallery"    class="nav-link text-sm font-medium">Gallery</a>
         <a href="#contact"    class="nav-link text-sm font-medium">Contact</a>
       </nav>
@@ -81,6 +82,7 @@
       <div class="space-y-4">
         <a href="#about"      class="block nav-link text-base font-medium py-1">About</a>
         <a href="#categories" class="block nav-link text-base font-medium py-1">Businesses</a>
+        <a href="#franchises" class="block nav-link text-base font-medium py-1">Franchises</a>
         <a href="#gallery"    class="block nav-link text-base font-medium py-1">Gallery</a>
         <a href="#contact"    class="block nav-link text-base font-medium py-1">Contact</a>
       </div>
@@ -200,7 +202,12 @@
       </div>
 
       <!-- Category cards rendered here by JavaScript -->
-      <div id="categoryCards" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"></div>
+      <div id="categoryCards" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3"></div>
+      <div class="mt-10 text-center reveal">
+        <button id="viewAllCategoriesBtn" class="rounded-full border border-brand-purple px-8 py-3 font-semibold text-white transition hover:bg-brand-purple">
+          View All Categories
+        </button>
+      </div>
     </div>
   </section>
 
@@ -225,8 +232,33 @@
 
 
   <!-- ════════════════════════════════════════════════════════════
-       PHOTO GALLERY  —  Grid of business images
+       FRANCHISE SUCCESS STORIES  —  Delivered franchise highlights
        ════════════════════════════════════════════════════════════ -->
+  <section id="franchises" class="py-24 px-6 lg:px-8 bg-slate-900/30">
+    <div class="mx-auto max-w-7xl">
+
+      <!-- Section header -->
+      <div class="mb-16 text-center reveal">
+        <p class="mb-2 text-sm uppercase tracking-[0.3em] text-brand-gold">OUR DELIVERED FRANCHISES</p>
+        <h2 class="mb-4 text-4xl font-bold text-white">Franchise Success Stories</h2>
+        <div class="section-divider mx-auto"></div>
+        <p class="mx-auto max-w-2xl text-slate-400">Real franchise businesses successfully delivered by Bhai Bhai Group of Companies to clients across Pakistan and UK</p>
+      </div>
+
+      <div id="franchiseCards" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3"></div>
+
+      <div class="mt-12 text-center reveal">
+        <a href="category.html?id=gems-jewellery" class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-brand-purple/90 px-8 py-3 text-sm font-semibold text-white transition hover:bg-brand-purple">
+          View All
+        </a>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- ════════════════════════════════════════════════════════════
+       PHOTO GALLERY  —  Grid of business images
+       ════════════════════════════════════════════════════ -->
   <section id="gallery" class="py-24 px-6 lg:px-8 bg-slate-900/30">
     <div class="mx-auto max-w-7xl">
 

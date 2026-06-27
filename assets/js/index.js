@@ -144,15 +144,29 @@ function renderCategories() {
    ───────────────────────────────────────────────────────────── */
 function getHomepageFeaturedBusinesses() {
   const selected = [];
-  const seenCategories = new Set();
+  const maxFeatured = 6;
 
-  FEATURED_BUSINESSES.forEach(function (biz) {
-    if (selected.length >= 6) return;
-    if (seenCategories.has(biz.categoryId)) return;
+  for (let i = 0; i < CATEGORIES.length && selected.length < maxFeatured; i += 1) {
+    const category = CATEGORIES[i];
+    if (!category || !Array.isArray(category.businesses) || category.businesses.length === 0) {
+      continue;
+    }
 
-    selected.push(biz);
-    seenCategories.add(biz.categoryId);
-  });
+    /* Pick the first featured business in the category, or fallback to the first business */
+    const featuredBiz = category.businesses.find(function (biz) {
+      return biz.featured === true;
+    });
+    const business = featuredBiz || category.businesses[0];
+
+    if (business) {
+      selected.push({
+        ...business,
+        categoryId: category.id,
+        categoryName: category.name,
+        categoryColor: category.color,
+      });
+    }
+  }
 
   return selected;
 }
@@ -194,6 +208,59 @@ function renderFeatured() {
         </div>
 
         <!-- Card text content -->
+        <div class="p-6">
+          <p class="text-xs uppercase tracking-widest text-slate-500">${biz.established ? "Est. " + biz.established : ""}</p>
+          <h3 class="mt-1 text-xl font-semibold text-white">${biz.name}</h3>
+          <p class="mt-2 text-sm text-slate-400 line-clamp-2">${biz.tagline}</p>
+        </div>
+      </a>
+    `;
+  }).join("");
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   6. RENDER FRANCHISES
+   ─────────────────────────────────────────────────────────────
+   Shows delivered franchise businesses on the homepage.
+   ───────────────────────────────────────────────────────────── */
+function renderFranchises() {
+  const container = document.getElementById("franchiseCards");
+  if (!container) return;
+
+  const deliveredBusinesses = ALL_BUSINESSES.filter(function (biz) {
+    return biz.delivered === true;
+  }).slice(0, 6);
+
+  if (deliveredBusinesses.length === 0) {
+    container.innerHTML = "<p class='col-span-full text-center text-slate-400'>No delivered franchise businesses are available right now.</p>";
+    return;
+  }
+
+  container.innerHTML = deliveredBusinesses.map(function (biz) {
+    return `
+      <!-- Delivered franchise card -->
+      <a
+        href="business.html?id=${encodeURIComponent(biz.id)}"
+        class="group overflow-hidden rounded-[2rem] border border-white/10 bg-slate-900/70
+               transition hover:-translate-y-1 hover:border-brand-gold/40 reveal card-glow"
+      >
+        <div class="relative h-64 overflow-hidden bg-slate-800">
+          <img
+            src="${biz.thumbnail}"
+            alt="${biz.name}"
+            class="card-image h-full w-full object-cover transition duration-500 group-hover:scale-105"
+          />
+          <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-slate-950/10"></div>
+
+          <div class="absolute top-4 left-4">
+            <span class="badge">${biz.categoryName}</span>
+          </div>
+          <div class="absolute top-4 right-4">
+            <span class="rounded-full border border-brand-gold/40 bg-brand-gold/15 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.25em] text-brand-gold">Delivered</span>
+          </div>
+        </div>
+
         <div class="p-6">
           <p class="text-xs uppercase tracking-widest text-slate-500">${biz.established ? "Est. " + biz.established : ""}</p>
           <h3 class="mt-1 text-xl font-semibold text-white">${biz.name}</h3>
@@ -333,27 +400,74 @@ function renderSocialLinks() {
 
 
 /* ─────────────────────────────────────────────────────────────
-   9. CONTACT FORM SUBMISSION (EmailJS)
+   9. CATEGORY TOGGLE BUTTON
    ─────────────────────────────────────────────────────────────
-   When the user clicks "Send Message":
-     1. We validate the inputs are not empty.
-     2. We use EmailJS to send the email.
-     3. We show a success or error message.
-
-   SETUP REQUIRED:
-     - Go to https://www.emailjs.com/ and create a free account.
-     - Create a service (e.g. Gmail) and get your Service ID.
-     - Create a template and get your Template ID.
-     - Copy your Public Key from Account settings.
-     - Paste all three into the SITE.emailjs object in data.js.
-
-   In your EmailJS template, you can use these variables:
-     {{from_name}}    → sender's name
-     {{from_email}}   → sender's email
-     {{subject}}      → email subject
-     {{message}}      → message body
-     {{to_email}}     → set this to your business email in the template
+   Shows first 6 categories by default and allows toggling to all.
    ───────────────────────────────────────────────────────────── */
+function setupCategoryToggle() {
+  const button = document.getElementById("viewAllCategoriesBtn");
+  const cards = document.getElementById("categoryCards");
+  if (!button || !cards) return;
+
+  let showingAll = false;
+
+  function updateCategoryVisibility() {
+    const categoryCards = cards.children;
+    const limit = showingAll ? categoryCards.length : 6;
+    const showButton = categoryCards.length > 6;
+
+    for (let i = 0; i < categoryCards.length; i += 1) {
+      const card = categoryCards[i];
+      card.style.display = i < limit ? "block" : "none";
+      if (card.classList.contains("reveal")) {
+        if (i < limit) {
+          card.classList.add("visible");
+        } else {
+          card.classList.remove("visible");
+        }
+      }
+    }
+
+    button.style.display = showButton ? "inline-flex" : "none";
+    button.textContent = showingAll ? "Show Less" : "View All Categories";
+  }
+
+  button.addEventListener("click", function () {
+    showingAll = !showingAll;
+    updateCategoryVisibility();
+  });
+
+  /* Wait for categories to be rendered first */
+  requestAnimationFrame(updateCategoryVisibility);
+}
+
+
+/* ─────────────────────────────────────────────────────────────
+   10. INITIALIZE HOMEPAGE
+   ─────────────────────────────────────────────────────────────
+   Calls all homepage render functions.
+   ───────────────────────────────────────────────────────────── */
+function initHomepage() {
+  renderHero();
+  renderStats();
+  renderAbout();
+  renderCategories();
+  setupCategoryToggle();
+  renderFeatured();
+  renderFranchises();
+  renderGallery();
+  renderContactInfo();
+  renderSocialLinks();
+}
+
+document.addEventListener("DOMContentLoaded", initHomepage);
+
+
+/* ─────────────────────────────────────────────────────────────
+   11. SCROLL REVEAL / LAZY IMAGE HELPERS
+   Existing helpers are used across homepage and category pages.
+   ───────────────────────────────────────────────────────────── */
+
 function handleContactSubmit() {
   /* Get form values */
   const name    = document.getElementById("contactName").value.trim();
@@ -459,10 +573,11 @@ document.addEventListener("DOMContentLoaded", function () {
   renderAbout();        // 3. About section
   renderCategories();   // 4. Category cards
   renderFeatured();     // 5. Featured businesses
-  renderGallery();      // 6. Gallery
-  renderContactInfo();  // 7. Contact info
-  renderSocialLinks();  // 8. Social links
-  setFooterYear();      // 9. Footer year
+  renderFranchises();   // 6. Franchise success stories
+  renderGallery();      // 7. Gallery
+  renderContactInfo();  // 8. Contact info
+  renderSocialLinks();  // 9. Social links
+  setFooterYear();      // 10. Footer year
 
   /* After all content is rendered, set up scroll reveal and lazy images again
      because new elements were added to the DOM by the render functions above */

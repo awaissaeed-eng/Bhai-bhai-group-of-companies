@@ -54,9 +54,22 @@ function renderHero(biz) {
 
   /* Category badge */
   document.getElementById("heroCategoryBadge").textContent    = biz.categoryName || "";
+
   /* Established badge */
   document.getElementById("heroEstablishedBadge").textContent =
     biz.established ? "Est. " + biz.established : "";
+
+  /* Delivered franchise badge */
+  const heroDeliveredEl = document.getElementById("heroDeliveredBadge");
+  if (heroDeliveredEl) {
+    if (biz.delivered) {
+      heroDeliveredEl.textContent = "Delivered Franchise";
+      heroDeliveredEl.classList.remove("hidden");
+    } else {
+      heroDeliveredEl.textContent = "";
+      heroDeliveredEl.classList.add("hidden");
+    }
+  }
 }
 
 
@@ -112,7 +125,24 @@ function renderBreadcrumb(biz) {
    ───────────────────────────────────────────────────────────── */
 function renderDetails(biz) {
   /* Main description paragraph */
-  document.getElementById("businessDescription").textContent = biz.description;
+  const descriptionEl = document.getElementById("businessDescription");
+  if (descriptionEl) {
+    const existingInfo = document.getElementById("bizDeliveredInfo");
+    if (existingInfo) {
+      existingInfo.remove();
+    }
+
+    if (biz.delivered) {
+      descriptionEl.insertAdjacentHTML("beforebegin", `
+        <div id="bizDeliveredInfo" class="mb-6 rounded-[2rem] border border-brand-gold/20 bg-brand-gold/10 p-5 text-sm text-white">
+          <p class="font-semibold text-brand-gold">Delivered Franchise</p>
+          <p class="mt-2 text-slate-300">This business is part of our delivered franchise program, offering premium setup, ongoing support, and consistent quality.</p>
+        </div>
+      `);
+    }
+
+    descriptionEl.textContent = biz.description;
+  }
 
   /* Services list — each service as a bullet point */
   const servicesList = document.getElementById("servicesList");
@@ -168,6 +198,21 @@ function renderContactSidebar(biz) {
   /* Address */
   document.getElementById("bizAddress").textContent     = biz.address     || "Not available";
   document.getElementById("bizEstablished").textContent = biz.established ? "Est. " + biz.established : "—";
+
+  const establishedEl = document.getElementById("bizEstablished");
+  const existingStatus = document.getElementById("bizDeliveredStatus");
+  if (existingStatus) {
+    existingStatus.remove();
+  }
+
+  if (biz.delivered && establishedEl && establishedEl.parentElement) {
+    establishedEl.parentElement.insertAdjacentHTML("afterend", `
+      <div id="bizDeliveredStatus">
+        <p class="text-xs uppercase tracking-widest text-slate-500">Status</p>
+        <p class="mt-1 font-semibold text-brand-gold">✓ Delivered Franchise</p>
+      </div>
+    `);
+  }
 }
 
 

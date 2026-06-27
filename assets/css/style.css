@@ -84,6 +84,12 @@ body {
   white-space: nowrap;
 }
 
+.badge-delivered {
+  border-color: rgba(234, 179, 8, 0.4);
+  background: rgba(234, 179, 8, 0.15);
+  color: #fadb14;
+}
+
 
 /* ── 6. GOOGLE MAP IFRAME ──────────────────────────────────── */
 /* Forces the iframe to fill its container properly */
